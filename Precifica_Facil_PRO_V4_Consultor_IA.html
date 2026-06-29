@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Precifica Fácil PRO V4</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial,sans-serif}
+body{background:linear-gradient(135deg,#6A1B9A,#8E24AA,#AB47BC);min-height:100vh;color:#333}
+header{background:rgba(255,255,255,.1);backdrop-filter:blur(10px);padding:30px;text-align:center;color:#fff}
+.container{max-width:1200px;margin:auto;padding:25px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:20px}
+.card,.box{background:#fff;border-radius:20px;padding:20px;box-shadow:0 5px 15px rgba(0,0,0,.15)}
+.dashboard{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:25px}
+button{background:#E91E63;color:#fff;border:none;padding:10px 15px;border-radius:10px;cursor:pointer;margin:5px}
+input,select{width:100%;padding:10px;margin:8px 0;border:2px solid #ddd;border-radius:10px}
+.resultado{margin-top:10px;padding:10px;background:#F3E5F5;border-radius:10px}
+.dark{background:#121212!important;color:white}
+.dark .card,.dark .box{background:#1E1E1E;color:white}
+.dark h2{color:#ff69b4}
+.dark header{background:#1A1A1A}
+.dark nav{background:#000}
+.dark .resultado{background:#2A2A2A;color:white}
+.dark input,.dark select{background:#333;color:white;border-color:#555}
+@media(max-width:768px){.dashboard{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="boasVindas" style="background:white;padding:15px;text-align:center;font-weight:bold;">
+👋 Bem-vindo ao Precifica Fácil PRO!
+</div>
+
+<header>
+<h1>📊 Precifica Fácil PRO V4</h1>
+<p>Preço justo, gestão inteligente e crescimento sustentável</p>
+</header>
+
+<nav style="background:#4A148C;padding:15px;text-align:center;">
+<a href="#" style="color:white;margin:10px;">Dashboard</a>
+<a href="#" style="color:white;margin:10px;">Precificação</a>
+<a href="#" style="color:white;margin:10px;">Financeiro</a>
+<a href="#" style="color:white;margin:10px;">Aprendizado</a>
+</nav>
+
+<div class="container">
+<div class="dashboard">
+<div class="box"><h3>💰 Saldo</h3><p id="saldoDashboard">R$ 0,00</p></div>
+<div class="box"><h3>📈 Receitas</h3><p id="receitasTotal">R$ 0,00</p></div>
+<div class="box"><h3>📉 Despesas</h3><p id="despesasTotal">R$ 0,00</p></div>
+</div>
+
+<button id="btnTema" onclick="alternarTema()">🌙 Modo Escuro</button>
+<button onclick="exportarExcel()">📊 Exportar Dashboard</button>
+<button onclick="window.print()">📄 Exportar PDF</button>
+<button onclick="limparDados()">🗑 Limpar Dados</button>
+
+<div class="grid">
+<div class="card">
+<h2>💲 Calculadora de Precificação</h2>
+<input id="custos" type="number" placeholder="Custos">
+<input id="mao" type="number" placeholder="Mão de Obra">
+<input id="despesas" type="number" placeholder="Despesas">
+<input id="impostos" type="number" placeholder="Impostos (%)">
+<input id="lucro" type="number" placeholder="Lucro (%)">
+<button onclick="calcular()">Calcular Preço</button>
+<div class="resultado" id="resultado"></div>
+</div>
+
+<div class="card">
+<h2>💰 Controle Financeiro</h2>
+<input id="movimento" placeholder="Descrição">
+<input id="valor" type="number" placeholder="Valor">
+<button onclick="adicionarReceita()">Adicionar Receita</button>
+<button onclick="adicionarDespesa()">Adicionar Despesa</button>
+<ul id="lista"></ul>
+</div>
+
+<div class="card">
+<h2>🤖 Consultor Inteligente de Mercado</h2>
+
+<p style="margin-bottom:10px;">
+Descreva seu negócio com o máximo de detalhes possível.
+</p>
+
+<textarea id="consultaIA" rows="8"
+style="width:100%;padding:15px;border:2px solid #ddd;border-radius:10px;"
+placeholder="Exemplo:
+
+Sou fotógrafa newborn em São Gonçalo/RJ.
+
+Faço ensaios newborn com 10 fotos entregues.
+
+Tenho custos de R$ 80 por ensaio.
+
+Pago aluguel do estúdio.
+
+Atualmente cobro R$ 250.
+
+Gostaria de saber se meu preço está correto, quanto deveria cobrar e quantos ensaios preciso fazer por mês para ter lucro."></textarea>
+
+<button onclick="consultarIA()">
+🤖 Consultar Especialista IA
+</button>
+
+<div class="resultado" id="respostaIA">
+A IA irá analisar:<br><br>
+✔ Preço ideal<br>
+✔ Faixa média do mercado<br>
+✔ Lucratividade<br>
+✔ Quantidade de vendas necessárias<br>
+✔ Estratégias de marketing
+</div>
+</div>
+
+<div class="card">
+<h2>📚 Área de Aprendizado</h2>
+<select onchange="mostrarDica(this.value)">
+<option value="">Escolha um tema</option>
+<option value="financeiro">Gestão Financeira</option>
+<option value="marketing">Marketing</option>
+<option value="precificacao">Precificação</option>
+</select>
+<div class="resultado" id="dica"></div>
+</div>
+</div>
+</div>
+
+<footer style="margin-top:40px;padding:20px;text-align:center;background:#4A148C;color:white;">
+Precifica Fácil PRO • V4<br>
+Gestão Financeira • Marketing • Precificação
+</footer>
+
+<script>
+let saldo=0, receitas=0, despesasTotal=0;
+
+function atualizarDashboard(){
+document.getElementById('saldoDashboard').innerText='R$ '+saldo.toFixed(2);
+document.getElementById('receitasTotal').innerText='R$ '+receitas.toFixed(2);
+document.getElementById('despesasTotal').innerText='R$ '+despesasTotal.toFixed(2);
+}
+
+function salvarDados(){
+localStorage.setItem('saldo',saldo);
+localStorage.setItem('receitas',receitas);
+localStorage.setItem('despesasTotal',despesasTotal);
+localStorage.setItem('listaMovimentos',document.getElementById('lista').innerHTML);
+}
+
+function carregarDados(){
+saldo=Number(localStorage.getItem('saldo'))||0;
+receitas=Number(localStorage.getItem('receitas'))||0;
+despesasTotal=Number(localStorage.getItem('despesasTotal'))||0;
+document.getElementById('lista').innerHTML=localStorage.getItem('listaMovimentos')||'';
+atualizarDashboard();
+}
+window.onload=carregarDados;
+
+function calcular(){
+let c=+custos.value||0,m=+mao.value||0,d=+despesas.value||0,i=+impostos.value||0,l=+lucro.value||0;
+let preco=(c+m+d)*(1+i/100)*(1+l/100);
+resultado.innerHTML='Preço sugerido:<h2>R$ '+preco.toFixed(2)+'</h2>';
+}
+
+function adicionarReceita(){
+let desc=movimento.value, valor=+document.getElementById('valor').value||0;
+if(!desc||valor<=0)return alert('Preencha os campos.');
+saldo+=valor; receitas+=valor;
+lista.innerHTML+=`<li>➕ ${desc} - R$ ${valor.toFixed(2)}</li>`;
+atualizarDashboard(); salvarDados();
+movimento.value=''; document.getElementById('valor').value='';
+}
+
+function adicionarDespesa(){
+let desc=movimento.value, valor=+document.getElementById('valor').value||0;
+if(!desc||valor<=0)return alert('Preencha os campos.');
+saldo-=valor; despesasTotal+=valor;
+lista.innerHTML+=`<li>➖ ${desc} - R$ ${valor.toFixed(2)}</li>`;
+atualizarDashboard(); salvarDados();
+movimento.value=''; document.getElementById('valor').value='';
+}
+
+async function analisarComIA(){
+
+const produto=document.getElementById('produto').value;
+const meuPreco=document.getElementById('precoMeu').value;
+const precoConc=document.getElementById('precoConc').value;
+const cidade=document.getElementById('cidade').value;
+
+if(!produto || !meuPreco || !precoConc){
+document.getElementById('analise').innerHTML='Preencha todos os campos.';
+return;
+}
+
+document.getElementById('analise').innerHTML='🤖 Analisando mercado...';
+
+const diferenca=((meuPreco-precoConc)/precoConc)*100;
+
+let avaliacao='';
+let nota=0;
+
+if(diferenca <= -20){
+avaliacao='Seu preço está muito abaixo do mercado. Isso pode prejudicar sua lucratividade e a percepção de valor do seu produto.';
+nota=5;
+}else if(diferenca < 0){
+avaliacao='Seu preço está competitivo e ligeiramente abaixo do mercado.';
+nota=8;
+}else if(diferenca <= 20){
+avaliacao='Seu preço está dentro da média do mercado e demonstra boa estratégia de precificação.';
+nota=9;
+}else{
+avaliacao='Seu preço está acima da média do mercado. Avalie se o seu diferencial justifica esse valor.';
+nota=7;
+}
+
+document.getElementById('analise').innerHTML=`
+<h3>Resultado da IA</h3>
+<p><strong>Produto/Serviço:</strong> ${produto}</p>
+<p><strong>Região:</strong> ${cidade}</p>
+<p>${avaliacao}</p>
+<p><strong>Nota da Precificação:</strong> ${nota}/10</p>
+<p><strong>Sugestão:</strong> Analise seus diferenciais, custos e posicionamento antes de definir o preço final.</p>
+`;
+}
+
+function mostrarDica(v){
+const dicas={
+financeiro:'Controle receitas e despesas, mantenha reserva e analise resultados mensalmente.',
+marketing:'Use redes sociais, conteúdo útil, parcerias e anúncios para atrair clientes.',
+precificacao:'Some custos, despesas, impostos e lucro para definir preços sustentáveis.'
+};
+dica.innerText=dicas[v]||'';
+}
+
+function limparDados(){
+if(confirm("Deseja apagar todos os dados?")){
+saldo=0;receitas=0;despesasTotal=0;
+lista.innerHTML='';
+localStorage.clear();
+atualizarDashboard();
+salvarDados();
+}
+}
+
+function alternarTema(){
+document.body.classList.toggle('dark');
+document.getElementById('btnTema').innerText=
+document.body.classList.contains('dark')?'☀️ Modo Claro':'🌙 Modo Escuro';
+}
+
+function exportarExcel(){
+let csv="RELATORIO PRECIFICA FACIL\n\n";
+csv+="Saldo,"+saldo.toFixed(2)+"\nReceitas,"+receitas.toFixed(2)+"\nDespesas,"+despesasTotal.toFixed(2)+"\n";
+let blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});
+let link=document.createElement("a");
+link.href=URL.createObjectURL(blob);
+link.download="Dashboard_Precifica_Facil.csv";
+link.click();
+}
+
+async function consultarIA(){
+
+const pergunta=document.getElementById('consultaIA').value;
+const respostaDiv=document.getElementById('respostaIA');
+
+if(!pergunta){
+respostaDiv.innerHTML='⚠️ Descreva seu negócio para continuar.';
+return;
+}
+
+respostaDiv.innerHTML='🤖 Analisando mercado...<br><br>Esta função precisa ser conectada à API da OpenAI para funcionar com IA real.';
+
+try{
+
+const resposta = await fetch('https://SEU-SERVIDOR.com/api/consultor',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({pergunta:pergunta})
+});
+
+const dados = await resposta.json();
+
+respostaDiv.innerHTML='<h3>📊 Resultado da Análise</h3><p>'+dados.resposta+'</p>';
+
+}catch(erro){
+
+respostaDiv.innerHTML='❌ Configure sua API OpenAI no servidor para ativar esta funcionalidade.';
+}
+}
+
+</script>
+</body>
+</html>
